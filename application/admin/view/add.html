@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>添加商品</title>
+		<script src="__JS__/jquery.min.js"></script>
+	</head>
+	<body>
+	<!-- 要用name不然serialize()拿不到值 -->
+	<form action="{:url('admin/Add/add')}" method="post" id="editionForm" enctype="multipart/form-data">
+		<td>商品名字<input type="text" id="commodity_name" name="commodity_name"></td><br/>
+		商品版本<input type="text" id="commodity_edition" name="commodity_edition"><br/>
+		商品价格<input type="text" id="commodity_money" name="commodity_money"><br/>
+		<select id="dd" name='dd'>
+             	<option value='1'>小米手机</option>
+             	<option value='2'>红米手机</option>
+             	<option value='3'>平板笔记</option>
+            	<option value='4'>电视</option>
+            	<option value='5'>苹果手机</option>
+             	<option value='6'>智能硬件</option>
+            	<option value='7'>服务</option>
+            	<option value='8'>小米社区</option>
+        </select><br/>
+        	图片<input type="file" id="file" name='file'>
+        <input type="submit" value="提交">
+	</form>
+	</body>
+</html>
+<script>
+	/*function jia(){
+		//data=$('#editionForm').serialize();
+		//alert(data);
+	    $.ajax({
+	        type:"POST",
+	        url:"{:url('admin/Add/add')}",
+	        data:{'data':$('#editionForm').serialize()},
+	        success: function(data) {
+	        	alert(data);
+	        }
+	    });
+	}*/
+</script>

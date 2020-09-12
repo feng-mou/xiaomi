@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+        <meta name="author" content="order by dede58.com"/>
+		<title>小米6立即购买-小米商城</title>
+		<link rel="stylesheet" type="text/css" href="__CSS__/style.css">
+		<script src="__JS__/jquery.min.js"></script>
+	</head>
+	<body>
+	<!-- start header -->
+		<header>
+			<div class="top center">
+				<div class="left fl">
+					<ul>
+						<li><a href="{:url('admin/index/index')}" target="_blank">小米商城</a></li>
+						<li>|</li>
+						<li><a href="">MIUI</a></li>
+						<li>|</li>
+						<li><a href="">米聊</a></li>
+						<li>|</li>
+						<li><a href="">游戏</a></li>
+						<li>|</li>
+						<li><a href="">多看阅读</a></li>
+						<li>|</li>
+						<li><a href="">云服务</a></li>
+						<li>|</li>
+						<li><a href="">金融</a></li>
+						<li>|</li>
+						<li><a href="">小米商城移动版</a></li>
+						<li>|</li>
+						<li><a href="">问题反馈</a></li>
+						<li>|</li>
+						<li><a href="">Select Region</a></li>
+						<div class="clear"></div>
+					</ul>
+				</div>
+				<div class="right fr">
+					<div class="gouwuche fr"><a href="{:url('admin/Gouwuche/index')}">购物车</a></div>
+					<div class="fr">
+						<ul>
+							<li><a href="{:url('admin/Login/index')}" target="_blank">登录</a></li>
+							<li>|</li>
+							<li><a href="{:url('admin/Register/index')}" target="_blank" >注册</a></li>
+							<li>|</li>
+							<li><a href="{:url('admin/SelfInfo/index')}">个人中心</a></li>
+						</ul>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="clear"></div>
+			</div>
+		</header>
+	<!--end header -->
+
+<!-- start banner_x -->
+		<div class="banner_x center">
+			<a href="./index.html" target="_blank"><div class="logo fl"></div></a>
+			<a href=""><div class="ad_top fl"></div></a>
+			<div class="nav fl">
+				<ul>
+					{foreach name='acg' item='ak'}
+						<li><a href="{:url('admin/liebiao/index',['id'=>$ak.id,'fy_id'=>1])}">{$ak.name}</a></li>
+					{/foreach}
+				</ul>
+			</div>
+			<div class="search fr">
+				<form action="" method="post">
+					<div class="text fl">
+						<input type="text" class="shuru"  placeholder="小米6&nbsp;小米MIX现货">
+					</div>
+					<div class="submit fl">
+						<input type="submit" class="sousuo" value="搜索"/>
+					</div>
+					<div class="clear"></div>
+				</form>
+				<div class="clear"></div>
+			</div>
+		</div>
+<!-- end banner_x -->
+
+	
+	<!-- xiangqing -->
+	<form action="" method="" id="editionForm">
+	<div class="xiangqing">
+		<div class="neirong w">
+			<div class="xiaomi6 fl">小米6</div>
+			<nav class="fr">
+				<li><a href="">概述</a></li>
+				<li>|</li>
+				<li><a href="">变焦双摄</a></li>
+				<li>|</li>
+				<li><a href="">设计</a></li>
+				<li>|</li>
+				<li><a href="">参数</a></li>
+				<li>|</li>
+				<li><a href="">F码通道</a></li>
+				<li>|</li>
+				<li><a href="">用户评价</a></li>
+				<div class="clear"></div>
+			</nav>
+			<div class="clear"></div>
+		</div>	
+	</div>
+	
+	<div class="jieshao mt20 w">
+		{foreach name='$arr' item='vo'}
+		<div class="left fl"><img src="__IMAGE__/liebiao_xiaomi6.jpg"></div>
+		<div class="right fr">
+			<div class="h3 ml20 mt20"></div>
+			<div class="jianjie mr40 ml20 mt10">{$vo.commodity_describe}</div>
+			<div class="jiage ml20 mt10"></div>
+			<div class="ft20 ml20 mt20">选择版本</div>
+			<div class="xzbb ml20 mt10">
+			<input type="hidden" value="{$s=0}">
+				{foreach name='$edition' item='ak'}
+				<div class="banben fl" onclick="choice({$s++})" name="biao">
+					<a>
+						<span>{$ak.commodity_edition}<input type="radio" value="{$ak.id}" name="edition_id"></span>
+						<!--<span>100元</span>-->
+						<input type='hidden' value='{$ak.id}' id='commodity_id'>
+					</a>
+				</div>
+				{/foreach}
+				<div class="clear"></div>
+			</div>
+			<div class="ft20 ml20 mt20">选择颜色</div>
+			<div class="xzbb ml20 mt10">
+				<div class="banben">
+					<a>
+						<span class="yuandian"></span>
+						<span class="yanse">亮黑色</span>
+					</a>
+				</div>
+			</div>
+			{foreach name='$edition' item='money'}
+			<div class="xqxq mt20 ml20" name="hezi">
+				<div class="top1 mt10">
+					<div class="left1 fl">{$money.commodity_edition}</div>
+					<div class="right1 fr">{$money.commodity_money}元</div>
+					<div class="clear"></div>
+				</div>
+				<div class="bot mt20 ft20 ftbc">总计：{$money.commodity_money}元</div>
+			</div>
+			{/foreach}
+			<div class="xiadan ml20 mt20">
+					<input class="jrgwc"  type="button" name="jrgwc" value="立即选购" />
+					<input class="jrgwc" type="button" name="jrgwc" value="加入购物车" onclick="jia()"/>
+				
+			</div>
+			
+		</div>
+		{/foreach}
+		<div class="clear"></div>
+	</div>
+	</form>
+	<!-- footer -->
+	<footer class="mt20 center">
+			
+			<div class="mt20">小米商城|MIUI|米聊|多看书城|小米路由器|视频电话|小米天猫店|小米淘宝直营店|小米网盟|小米移动|隐私政策|Select Region</div>
+			<div>©mi.com 京ICP证110507号 京ICP备10046444号 京公网安备11010802020134号 京网文[2014]0059-0009号</div> 
+			<div>违法和不良信息举报电话：185-0130-1238，本网站所列数据，除特殊说明，所有数据均出自我司实验室测试</div>
+
+		</footer>
+
+	</body>
+</html>
+<script>
+	window.onload=function(){
+		//初始化状态
+		divs=document.getElementsByName("hezi");  //所有内容div对象  数组
+		lis=document.getElementsByName("biao");  //所有li的对象  数组
+		edition=document.getElementsByName('edition_id');
+		
+		//改变第二个div的样式
+		divs[1].style.display="none";   //按照块级元素显示
+		//改变第一个li的样式
+		lis[0].style.background="orange";
+		lis[0].style.borderBottom="1px solid white";
+		edition[0].style.checked=true;
+	
+		//定时器
+		/*div1();
+		setInterval("div1()",1000);*/
+	}
+	function jia(){
+		//alert('1');
+	    $.ajax({
+	        type:"POST",
+	        url:"{:url('admin/Gouwuche/submit_order')}",
+	        data:{'data' :$('#editionForm').serialize()},
+	        success: function(data) {
+	        	//if(data.code==404){
+	        		alert(data.msg);
+	        	//}else{
+	        	//	alert(data.msg);
+	        		//window.location.href=data.data;
+	        	//}
+	        }
+	    });
+	}
+	//价格
+	function choice(i){
+		for(var j=0;j<lis.length;j++){  //循环li对象，j是li的下标
+			if(i==j){
+				//被悬浮的li
+				lis[j].style.background="orange";
+				lis[j].style.borderBottom="1px solid white";
+				divs[j].style.display="block";
+				edition[j].style.checked=true;
+			}else{
+				lis[j].style.background="#ffffff";
+				lis[j].style.borderBottom="1px solid #B5CBD9";
+				divs[j].style.display="none";
+				edition[j].style.checked=false;
+			}
+		}
+	}
+	
+	
+
+	
+</script>

@@ -1,0 +1,28 @@
+<html>
+<head>
+	<title>layui使用和短信验证码</title>
+	<style href="__LAYUI__/layui/css/layui.css"></style>
+	<script src="__LAYUI__/layui/layui.js"></script>
+	<script src="__JS__/jquery.min.js"></script>
+</head>
+<body>
+	<form action="" method="post">
+		账号:<input type="button" id="dd"><br/>
+		<div name="xiaodi">1</div>
+		<span>0</span>
+	</form>
+	<script>
+		/*function vv(){
+			layer.open({
+				  type: 1, 
+				  content: '传入任意的文本或html' //这里content是一个普通的String
+				});
+		}*/
+		$('#dd').click(function(){
+			var xiao=$(".xiaodi")[0].html;
+			alert(xiao);
+			//alert($("input[name='xiaodi']")[0].html);
+		});
+	</script>
+</body>
+</html>
