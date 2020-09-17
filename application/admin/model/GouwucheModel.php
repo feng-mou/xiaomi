@@ -20,7 +20,7 @@
            ];
            $result2=Db::name('order')->insert($order_data);
            if($result2){
-               //添加购物车成功
+               return "添加购物车成功";
                return json(['code' => 404, 'data' => '', 'msg' => '添加购物车成功']);
            }else{
                //添加购物车失败

@@ -81,6 +81,7 @@
 		<div class="selfinfo center">
 		<div class="lfnav fl">
 			<div class="ddzx">订单中心</div>
+			
 			<div class="subddzx">
 				<ul>
 					<li><a href="" style="color:#ff6700;font-weight:bold;">我的订单</a></li>
@@ -101,21 +102,27 @@
 		</div>
 		<div class="rtcont fr">
 			<div class="ddzxbt">交易订单</div>
-			<div class="ddxq">
-				<div class="ddspt fl"><img src="__IMAGE__/gwc_xiaomi6.jpg" alt=""></div>
-				<div class="ddbh fl">订单号:1705205643098724</div>
+			{foreach name='result' item='vo'}
+				<div class="ddxq">
+				<div class="ddspt fl"><img src="__IMAGE__/{$vo.commodity_img}" alt="{$vo.commodity_edition}" width="100%"></div>
+				<div class="ddbh fl">订单号:{$vo.order_number}</div>
 				<div class="ztxx fr">
 					<ul>
+					{if $vo.order_goods==1}
+						<li>未发货</li>
+					{else}
 						<li>已发货</li>
-						<li>￥2499.00</li>
-						<li>2017/05/20 13:30</li>
+					{/if}
+						<li>￥{$vo.commodity_money}</li>
+						<li style="font-size:7px;">{$vo.order_times}</li>
 						<li><a href="">订单详情></a></li>
 						<div class="clear"></div>
 					</ul>
 				</div>
 				<div class="clear"></div>
 			</div>
-			<div class="ddxq">
+			{/foreach}
+			<!--<div class="ddxq">
 				<div class="ddspt fl"><img src="__IMAGE__/liebiao_hongmin4_dd.jpg" alt=""></div>
 				<div class="ddbh fl">订单号:170526435444865</div>
 				<div class="ztxx fr">
@@ -128,7 +135,7 @@
 					</ul>
 				</div>
 				<div class="clear"></div>
-			</div>
+			</div>-->
 		</div>
 		<div class="clear"></div>
 		</div>

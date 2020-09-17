@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
@@ -147,7 +147,7 @@ return [
 		'__CSS__'=>'/static/css',
 		'__IMAGE__'=>'/static/image',
         '__JS__'=>'/static/js',
-        '__LAYUI__'=>'/static/layui-v2.5.6'
+        '__LAYUI__'=>'/static/layui-v2.5.6/layui'
 	],
     // 默认跳转页面对应的模板文件
     'dispatch_success_tmpl'  => THINK_PATH . 'tpl' . DS . 'dispatch_jump.tpl',

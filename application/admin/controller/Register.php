@@ -27,7 +27,7 @@
                 return json(['code' => 404, 'data' => '', 'msg' => '账号格式错误']);
             }
             
-            if(!preg_match("/^[\u4e00-\u9fa5]+$/",$name)) {
+            if(!preg_match("/^[a-zA-Z\s]+$/",$name)) {
                 return json(['code' => 404, 'data' => '', 'msg' => '该字符串不全部是英文,错误的']);
             }
             

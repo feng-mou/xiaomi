@@ -1,0 +1,64 @@
+<html>
+	<head>
+		<title>layui测试</title>
+	</head>
+		
+		<link rel="stylesheet" type="text/css" href="__LAYUI__/css/layui.css">
+		<script type="text/javascript" src="__LAYUI__/layui.all.js"></script>
+	<body>
+	<button type="button" class="layui-btn layui-btn-normal" onclick="aa()">1</button>
+	<button data-method="setTop" class="layui-btn" onclick="bb()">2</button>
+	<button type="button" class="layui-btn layui-btn-normal" onclick="cc()">3</button>
+	<button type="button" class="layui-btn layui-btn-normal" onclick="dd()">4</button>
+	<button type="button" class="layui-btn layui-btn-normal" onclick="ee()">5</button>
+	<button type="button" class="layui-btn layui-btn-normal" onclick="ff()">6</button>
+	<button type="button" class="layui-btn layui-btn-normal" onclick="gg()">7</button>
+	<button type="button" class="layui-btn layui-btn-normal" onclick="hh()">8</button>
+	<script>
+		function aa(){
+			//√
+			//layer.msg("这是一个msg提示框", { icon: 1, offset: "auto", time:2000 })
+			layer.msg('删除失败', {icon: 1});
+		}
+		
+		function bb(){
+			//×
+			layer.alert('爱情', {
+				  icon: 2,
+				  skin: 'layer-ext-moon' //该皮肤由layer.seaning.com友情扩展。关于皮肤的扩展规则，去这里查阅
+				})
+		}
+		
+		function cc(){
+			//?
+			//layer.msg("这是一个msg提示框", { icon: 1, offset: "auto", time:2000 })
+			layer.msg('删除失败', {icon: 3});
+		}
+		function dd(){
+			//锁
+			//layer.msg("这是一个msg提示框", { icon: 1, offset: "auto", time:2000 })
+			layer.msg('删除失败', {icon: 4});
+		}
+		function ee(){
+			//哭脸
+			//layer.msg("这是一个msg提示框", { icon: 1, offset: "auto", time:2000 })
+			layer.msg('删除失败', {icon: 5});
+		}
+		function ff(){
+			//笑脸
+			//layer.msg("这是一个msg提示框", { icon: 1, offset: "auto", time:2000 })
+			layer.msg('删除失败', {icon: 6});
+		}
+		function gg(){
+			//感叹号
+			//layer.msg("这是一个msg提示框", { icon: 1, offset: "auto", time:2000 })
+			layer.msg('删除失败', {icon: 7});
+		}
+		function hh(){
+			//后面都是感叹号
+			//layer.msg("这是一个msg提示框", { icon: 1, offset: "auto", time:2000 })
+			layer.msg('删除失败', {icon: 8});
+		}
+	</script>
+	</body>
+</html>

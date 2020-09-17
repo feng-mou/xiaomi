@@ -1,28 +1,196 @@
+<!DOCTYPE html>
 <html>
-<head>
-	<title>layui使用和短信验证码</title>
-	<style href="__LAYUI__/layui/css/layui.css"></style>
-	<script src="__LAYUI__/layui/layui.js"></script>
-	<script src="__JS__/jquery.min.js"></script>
-</head>
-<body>
-	<form action="" method="post">
-		账号:<input type="button" id="dd"><br/>
-		<div name="xiaodi">1</div>
-		<span>0</span>
-	</form>
+	<head>
+		<meta charset="UTF-8">
+        <meta name="author" content="order by dede58.com"/>
+		<title>我的购物车-小米商城</title>
+		<link rel="stylesheet" type="text/css" href="__CSS__/style.css">
+		<script src="__JS__/jquery.min.js"></script>
+	</head>
+	<body>
+	<!-- start header -->
+	<!--end header -->
+
+<!-- start banner_x -->
+		<div class="banner_x center">
+			<a href="./index.html" target="_blank"><div class="logo fl"></div></a>
+			
+			<div class="wdgwc fl ml40">我的购物车</div>
+			<div class="wxts fl ml20">温馨提示：产品是否购买成功，以最终下单为准哦，请尽快结算</div>
+			<div class="dlzc fr">
+				<ul>
+					<li><a href="{:url('admin/Login/index')}" target="_blank">登录</a></li>
+					<li>|</li>
+					<li><a href="{:url('admin/Register/index')}" target="_blank">注册</a></li>
+					<li>|</li>
+					<li><a href="{:url('admin/Dingdanzhongxin/index')}" target="_blank">订单中心</a></li>	
+				</ul>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<form action="" method="post" id="orderForm">
+		<div class="xiantiao"></div>
+		<div class="gwcxqbj">
+			<div class="gwcxd center">
+				<div class="top2 center">
+					<div class="sub_top fl">
+						<input type="checkbox" value="quanxuan" class="quanxuan" id="quan"/>全选
+
+					</div>
+					<div class="sub_top fl">商品名称</div>
+					<div class="sub_top fl">单价(元)</div>
+					<div class="sub_top fl">数量</div>
+					<div class="sub_top fl">小计</div>
+					<div class="sub_top fr">操作</div>
+					<div class="clear"></div>
+				</div>
+				<!--  <input type="hidden" value="{$i=0}">-->
+				
+				{foreach name='result' item='vo'}
+				<div class="content2 center">
+					<div class="sub_content fl ">
+					    <input type="checkbox"value="quanxuan" class='all' onchange="checkedall({$vo.i},{$vo.commodity_money})"/>			
+					</div>
+					<div class="sub_content fl"><img src="__IMAGE__/{$vo.commodity_img}" width="65px"></div>
+					<div class="sub_content fl ft20">{$vo.commodity_name.$vo.commodity_edition}</div>
+					<div class="sub_content fl">{$vo.commodity_money}</div>
+					<div class="sub_content fl">
+						<input class="shuliang" type="number" class='shuliang' name='shuliang' value="{$vo.order_count}" step="1" min="1" oninput="calculation(this,{$vo.i},{$vo.commodity_money})">
+						<!--  <input type="hidden" value="{$i++}">-->
+					</div>
+					<div class="sub_content fl" name="money">{$vo.commodity_money}</div>
+					<div class="sub_content fl" onclick="quxiao_order({$vo.yy})">x</div><!-- {$vo.commodity_img} -->
+					<div class="clear"></div>
+					
+				</div>
+				<!--<div class="content2 center">
+					<div class="sub_content fl ">
+						<input type="checkbox" value="quanxuan" class="quanxuan" />
+					</div>
+					<div class="sub_content fl"><img src="__IMAGE__/gwc_xiaomi6.jpg"></div>
+					<div class="sub_content fl ft20">小米6全网通6GB内存+64GB 亮黑色</div>
+					<div class="sub_content fl ">2499元</div>
+					<div class="sub_content fl">
+						<input class="shuliang" type="number" value="1" step="1" min="1" >
+					</div>
+					<div class="sub_content fl">2499元</div>
+					<div class="sub_content fl"><a href="">×</a></div>
+					<div class="clear"></div>
+				</div>-->
+				{/foreach}
+			</div>
+			<div class="jiesuandan mt20 center">
+				<div class="tishi fl ml20">
+					<ul>
+						<li><a href="javascript:window.history.go(-1)">继续购物</a></li>
+						<li>|</li>
+						<!--  <li>共<span id="q">1</span>件商品，已选择<span>1</span>件</li>-->
+						<li><span id="q"></span></li>
+						<div class="clear"></div>
+					</ul>
+				</div>
+				<div class="jiesuan fr">
+					<div class="jiesuanjiage fl">合计（不含运费）：<span id="qian">0元</span></div>
+					<div class="jsanniu fr"><input class="jsan" type="button" name="jiesuan" onclick="submit_order()"  value="去结算"/></div>
+					<div class="clear"></div>
+				</div>
+				<div class="clear"></div>
+			</div>
+		</div>
+		</form>
+  
+
+	
+	<!-- footer -->
+	<!--<footer class="center">
+			
+			<div class="mt20">小米商城|MIUI|米聊|多看书城|小米路由器|视频电话|小米天猫店|小米淘宝直营店|小米网盟|小米移动|隐私政策|Select Region</div>
+			<div>©mi.com 京ICP证110507号 京ICP备10046444号 京公网安备11010802020134号 京网文[2014]0059-0009号</div> 
+			<div>违法和不良信息举报电话：185-0130-1238，本网站所列数据，除特殊说明，所有数据均出自我司实验室测试</div>
+		</footer>-->
+		
 	<script>
-		/*function vv(){
-			layer.open({
-				  type: 1, 
-				  content: '传入任意的文本或html' //这里content是一个普通的String
-				});
-		}*/
-		$('#dd').click(function(){
-			var xiao=$(".xiaodi")[0].html;
-			alert(xiao);
-			//alert($("input[name='xiaodi']")[0].html);
-		});
+	//初始化
+	window.onload=function(){
+		for(i=0;i<$("div[name='money']").length;i++){}
+		$("#q").text("共"+i+"件商品,已选中"+0+"件")
+	}
+	//数量		
+	function calculation(a,count,money){
+			qian=a.value*money
+			$("div[name='money']").eq(count).text(qian)
+	}
+	//单项
+	function checkedall(count,money){
+			
+			//获取价格
+			yuan=money*$('.shuliang').eq(count).val();	
+			if($(".all").eq(count).is(':checked')){
+				yuan=yuan+parseInt($("#qian").text());
+				$("#qian").text(yuan+'元')
+				$("[name='shuliang']").eq(count).attr("disabled","disabled");
+				a=0
+				for(i=0;i<$("div[name='money']").length;i++){
+					if($(".all").eq(i).is(":checked")){
+						a++;
+					}
+				}
+				$("#q").text("共"+i+"件商品,已选中"+a+"件")
+				if($('.all:checked').length==$('.all').length){
+					$('#quan').prop("checked", true); 
+				}
+			}else{
+				yuan=parseInt($("#qian").text())-yuan
+				$("#qian").text(yuan+"元")
+				$("[name='shuliang']").eq(count).attr("disabled",false);
+				$("#quan").prop("checked",false)
+				a=0
+				for(i=0;i<$("div[name='money']").length;i++){
+					if($(".all").eq(i).is(":checked")){
+						a++;
+					}
+				}
+				$("#q").text("共"+i+"件商品,已选中"+a+"件")
+			}
+			
+	}
+	//全选按钮
+			$('#quan').click(function(){
+				yuan=0
+				if(this.checked){
+					for(i=0;i<$("div[name='money']").length;i++){
+						$(".all").eq(i).prop("checked",true)
+						$("[name='shuliang']").attr("disabled","disabled");			
+						yuan=yuan+parseInt($("div[name='money']").eq(i).text())
+					}
+					$("#q").text("共"+i+"件商品,已选中"+i+"件")
+					$("#qian").text(yuan+"元")
+				}else{
+					for(v=0;v<$("div[name='money']").length;v++){
+						$(".all").eq(v).prop("checked",false)
+						$("[name='shuliang']").eq(v).attr("disabled",false);
+					}
+					$("#q").text("共"+i+"件商品,已选中"+0+"件")
+					$("#qian").text(0+"元")
+				}
+				
+			})
+	function quxiao_order(id){	
+			
+			$.ajax({
+		        type:"POST",
+		        url:"{:url('admin/Gouwuche/quxiao_order')}",
+		        data:{'id' :id},
+		        success: function(data) {
+		        	if(data.code == 404){
+		                alert(data.msg);
+		            }else{
+		                alert(data.msg);
+		                window.location.href=data.data;
+		            }
+		        }
+	    	});
+	}
 	</script>
-</body>
+	</body>
 </html>

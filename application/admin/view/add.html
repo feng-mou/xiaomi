@@ -9,18 +9,25 @@
 	<!-- 要用name不然serialize()拿不到值 -->
 	<form action="{:url('admin/Add/add')}" method="post" id="editionForm" enctype="multipart/form-data">
 		<td>商品名字<input type="text" id="commodity_name" name="commodity_name"></td><br/>
-		商品版本<input type="text" id="commodity_edition" name="commodity_edition"><br/>
 		商品价格<input type="text" id="commodity_money" name="commodity_money"><br/>
-		<select id="dd" name='dd'>
-             	<option value='1'>小米手机</option>
-             	<option value='2'>红米手机</option>
-             	<option value='3'>平板笔记</option>
-            	<option value='4'>电视</option>
-            	<option value='5'>苹果手机</option>
-             	<option value='6'>智能硬件</option>
-            	<option value='7'>服务</option>
-            	<option value='8'>小米社区</option>
+		<select  name='edition'>
+		{foreach name="edition" item='vo'}
+             	<option value='{$vo.id}'>{$vo.commodity_edition}</option>
+		{/foreach}
+		</select><br/>
+		
+		
+		<select name='class'>
+		{foreach name="class" item="ak"}
+             	<option value='{$ak.id}'>{$ak.name}</option>
+             	
+        {/foreach}
         </select><br/>
+        <select name='color'>
+		{foreach name="color" item='fzq'}
+             	<option value='{$vo.id}'>{$fzq.commodity_color}</option>
+		{/foreach}
+		</select><br/>
         	图片<input type="file" id="file" name='file'>
         <input type="submit" value="提交">
 	</form>

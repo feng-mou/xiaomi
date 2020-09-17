@@ -25,9 +25,16 @@
                 //查这个类的商品
                 //$arr=Db::name('commodity')->where('commodity_class',$id)->limit(0,5)->select();
                 $arr=Db::name('commodity')
-                ->field('a.id as dd,a.commodity_describe,a.commodity_cc,b.commodity_name,b.commodity_money,commodity_edition,commodity_img,commodity_id')
+                ->field('a.id as dd,
+                        a.commodity_class,
+                        a.commodity_describe,
+                        a.commodity_count,
+                        a.commodity_cc,
+                        a.commodity_name,
+                        a.commodity_money,
+                        a.commodity_img')
                 ->alias('a')
-                ->join('edition_money b','a.commodity_cc=b.id')
+                ->where('a.commodity_class',$id)
                 ->limit(0,5)
                 ->select();
                 //分页

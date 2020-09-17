@@ -9,6 +9,17 @@
      */
     class Add extends Base{
         public function index(){
+            //版本
+            $edition=Db::name('edition')->select();
+            $this->assign('edition',$edition);
+            
+            //什么类
+            $class=Db::name('class')->select();
+            $this->assign('class',$class);
+            
+            //什么颜色
+            $color=Db::name('color')->select();
+            $this->assign('color',$color);
             return $this->fetch('./add');
         } 
         
@@ -51,15 +62,20 @@
                         echo "文件存储在: " . "D:/phpstudy_pro/WWW/php02/xiaomi/public/static/image/" . $_FILES["file"]["name"];
                         $data=$_POST;
                         $commodity_name=$data['commodity_name'];
-                        $commodity_edition=$data['commodity_edition'];
+   
                         $commodity_money=$data['commodity_money'];
-                        $dd=$data['dd'];
+                        $commodity_edition_id=$data['edition'];
+                        $class=$data['class'];
+                        $color=$data['color'];
+                        
                         $addData=[
                             'commodity_name'=>$commodity_name,
-                            'commodity_edition'=>$commodity_edition,
+       
                             'commodity_money'=>$commodity_money,
+                            'commodity_edition_id'=>$commodity_edition_id,
                             'commodity_img'=>$_FILES["file"]["name"],
-                            'commodity_class'=>$dd
+                            'commodity_class'=>$class,
+                            'commodity_color'=>$color
                         ];
                         $result=Db::name('edition_money')->insert($addData);
                         if($result){

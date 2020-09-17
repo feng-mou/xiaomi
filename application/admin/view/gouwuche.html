@@ -34,11 +34,8 @@
 			<div class="gwcxd center">
 				<div class="top2 center">
 					<div class="sub_top fl">
-					{if condition="$checked eq 1"}
-						<input type="checkbox" value="quanxuan" class="quanxuan" id="laoda" onclick="quan()" checked=true/>全选
-					{else/}
-						<input type="checkbox" value="quanxuan" class="quanxuan" id="laoda" onclick="quan()"/>全选	
-					{/if}
+						<input type="checkbox" value="quanxuan" class="quanxuan" id="quan"/>全选
+
 					</div>
 					<div class="sub_top fl">商品名称</div>
 					<div class="sub_top fl">单价(元)</div>
@@ -47,24 +44,22 @@
 					<div class="sub_top fr">操作</div>
 					<div class="clear"></div>
 				</div>
+				<!--  <input type="hidden" value="{$i=0}">-->
+				
 				{foreach name='result' item='vo'}
 				<div class="content2 center">
 					<div class="sub_content fl ">
-						{if condition="$vo.order_checked eq 1"}
-						    <input type="checkbox" value="{$vo.yy}" class="quanxuan" name="xiaodi"onclick="queren({$vo.yy})"/>
-						{else/}
-							<input type="checkbox" value="{$vo.yy}" class="quanxuan" name="xiaodi"  onclick="quxiao({$vo.yy})" checked=true/>
-							<input type="hidden" value="{$vo.yy}" name="order_id[])">
-						{/if}
+					    <input type="checkbox"value="{$vo.yy}" name="" class='all' onchange="checkedall({$vo.i},{$vo.commodity_money})"/>			
 					</div>
 					<div class="sub_content fl"><img src="__IMAGE__/{$vo.commodity_img}" width="65px"></div>
 					<div class="sub_content fl ft20">{$vo.commodity_name.$vo.commodity_edition}</div>
-					<div class="sub_content fl ">{$vo.commodity_money}</div>
-					<div class="sub_content fl">
-						<input class="shuliang" type="text" value="1" step="1" min="1"disabled="disabled" >
-					</div>
 					<div class="sub_content fl">{$vo.commodity_money}</div>
-					<div class="sub_content fl" id="cc" onclick="order({$vo.yy})">X</div><!-- {$vo.commodity_img} -->
+					<div class="sub_content fl">
+						<input class="shuliang" type="number" class='shuliang' name='shuliang' value="{$vo.order_count}" step="1" min="1" oninput="calculation(this,{$vo.i},{$vo.commodity_money},{$vo.yy})">
+						<!--  <input type="hidden" value="{$i++}">-->
+					</div>
+					<div class="sub_content fl" name="money">{$vo.qian}</div>
+					<div class="sub_content fl" onclick="quxiao_order({$vo.yy})">x</div><!-- {$vo.commodity_img} -->
 					<div class="clear"></div>
 					
 				</div>
@@ -87,14 +82,15 @@
 			<div class="jiesuandan mt20 center">
 				<div class="tishi fl ml20">
 					<ul>
-						<li><a href="./liebiao.html">继续购物</a></li>
+						<li><a href="javascript:window.history.go(-1)">继续购物</a></li>
 						<li>|</li>
-						<li>共<span>{$shu}</span>件商品，已选择<span>{$liang}</span>件</li>
+						<!--  <li>共<span id="q">1</span>件商品，已选择<span>1</span>件</li>-->
+						<li><span id="q"></span></li>
 						<div class="clear"></div>
 					</ul>
 				</div>
 				<div class="jiesuan fr">
-					<div class="jiesuanjiage fl">合计（不含运费）：<span>{$money}元</span></div>
+					<div class="jiesuanjiage fl">合计（不含运费）：<span id="qian">0元</span></div>
 					<div class="jsanniu fr"><input class="jsan" type="button" name="jiesuan" onclick="submit_order()"  value="去结算"/></div>
 					<div class="clear"></div>
 				</div>
@@ -113,111 +109,124 @@
 			<div>违法和不良信息举报电话：185-0130-1238，本网站所列数据，除特殊说明，所有数据均出自我司实验室测试</div>
 		</footer>-->
 		
-<script>
-	/*window.onload=function(){
-		//初始化状态
-		laoda=document.getElementsById("laoda");  //全选按钮
-		xiaodi=document.getElementsByName("xiaodi");  //所有li的对象  数组
-		
-		
-		//改变第二个div的样式
-		//laoda[0].style.check=true;   //按照块级元素显示
-		//改变第一个li的样式
-		/*lis[0].style.background="orange";
-		lis[0].style.borderBottom="1px solid white";
-		edition[0].style.checked=true;*/
-	
-		//定时器
-		/*div1();
-		setInterval("div1()",1000);
-	}*/
+	<script>
+	//初始化
+	window.onload=function(){
+		for(i=0;i<$("div[name='money']").length;i++){}
+		$("#q").text("共"+i+"件商品,已选中"+0+"件")
+	}
+	//数量		
+	function calculation(a,count,money,id){
+			//a.value代表数量
+			qian=a.value*money
+			$("div[name='money']").eq(count).text(qian)
+			$.ajax({
+		        type:"POST",
+		        url:"{:url('admin/Gouwuche/order_count')}",
+		        data:{'id' :id,'count':a.value},
+		        success: function(data) {
+		        	//alert(data)
+		        }
+	    	});
+	}
+	//单项
+	function checkedall(count,money){
+			
+			//获取价格
+			yuan=money*$('.shuliang').eq(count).val();	
+			if($(".all").eq(count).is(':checked')){
+				yuan=yuan+parseInt($("#qian").text());
+				$("#qian").text(yuan+'元')
+				$("[name='shuliang']").eq(count).attr("disabled","disabled");
+				a=0
+				for(i=0;i<$("div[name='money']").length;i++){
+					if($(".all").eq(i).is(":checked")){
+						a++;
+					}
+				}
+				$("#q").text("共"+i+"件商品,已选中"+a+"件")
+				if($('.all:checked').length==$('.all').length){
+					$('#quan').prop("checked", true); 
+				}
+			}else{
+				yuan=parseInt($("#qian").text())-yuan
+				$("#qian").text(yuan+"元")
+				$("[name='shuliang']").eq(count).attr("disabled",false);
+				$("#quan").prop("checked",false)
+				a=0
+				for(i=0;i<$("div[name='money']").length;i++){
+					if($(".all").eq(i).is(":checked")){
+						a++;
+					}
+				}
+				$("#q").text("共"+i+"件商品,已选中"+a+"件")
+			}
+			
+	}
+	//全选按钮
+			$('#quan').click(function(){
+				yuan=0
+				if(this.checked){
+					for(i=0;i<$("div[name='money']").length;i++){
+						$(".all").eq(i).prop("checked",true)
+						$("[name='shuliang']").attr("disabled","disabled");			
+						yuan=yuan+parseInt($("div[name='money']").eq(i).text())
+					}
+					$("#q").text("共"+i+"件商品,已选中"+i+"件")
+					$("#qian").text(yuan+"元")
+				}else{
+					for(v=0;v<$("div[name='money']").length;v++){
+						$(".all").eq(v).prop("checked",false)
+						$("[name='shuliang']").eq(v).attr("disabled",false);
+					}
+					$("#q").text("共"+i+"件商品,已选中"+0+"件")
+					$("#qian").text(0+"元")
+				}
+				
+			})
+	function quxiao_order(id){
+			
+			$.ajax({
+		        type:"POST",
+		        url:"{:url('admin/Gouwuche/quxiao_order')}",
+		        data:{'id' :id},
+		        success: function(data) {
+		        	alert(data)
+		        	if(data.code == 404){
+		                alert(data.msg);
+		            }else{
+		                alert(data.msg);
+		                window.location.href=data.data;
+		            }
+		        }
+	    	});
+	}
 	function submit_order(){
-		//alert('1');
-	    $.ajax({
+		var arr=new Array()
+		for(i=0;i<$("div[name='money']").length;i++){
+			if($(".all").eq(i).is(":checked")){
+				arr.push($(".all").eq(i).val());
+			}
+		}
+		//console.log(arr)
+		$.ajax({
 	        type:"POST",
 	        url:"{:url('admin/Dingdanzhongxin/order_jieguo')}",
-	        data:{'data' : $('#orderForm').serialize()},
+	        data:{'id' :arr},
 	        success: function(data) {
-	        	alert(data.msg);
-	        	location.href=data.data;
-	            /*if(data.code == 404){
-	                alert(data.msg);
-	            }else{
+	        	//alert(data)
+	        	if(data.code == "error"){
+	        		//错误
 	                alert(data.msg);
 	                window.location.href=data.data;
-	            }*/
+	            }else{
+	            	//购买成功
+	                alert(data.msg);
+	                window.location.href=data.data;
+	            }
 	        }
-	    });
+    	});
 	}
-	function order(i){
-		$.ajax({
-	        type:"POST",
-	        url:"{:url('admin/Gouwuche/quxiao_order')}",
-	        data:{'order_id':i},
-	        success: function(data) {
-	        	alert(data.msg);
-	        	location.href=data.data;
-	        }
-	    });
-	}
-	function quan(){
-		//alert(1);
-		laoda=document.getElementById("laoda");  //全选按钮
-		xiaodi=document.getElementsByName("xiaodi");  //所有li的对象  数组
-		if(laoda.checked==true){
-			/*for(var i=0;i<xiaodi.length;i++){
-				xiaodi[i].checked=true;
-			}*/
-			//全选
-			$.ajax({
-		        type:"POST",
-		        url:"{:url('admin/Gouwuche/quan_yes')}",
-		        data:{},
-		        success: function(data) {	
-		        	location.href=data.data;
-		        }
-		    });
-		    
-		}else{
-			/*for(var i=0;i<xiaodi.length;i++){
-				xiaodi[i].checked=false;
-			}*/
-			//不全选
-			$.ajax({
-		        type:"POST",
-		        url:"{:url('admin/Gouwuche/quan_no')}",
-		        data:{},
-		        success: function(data) {	
-		        	location.href=data.data;
-		        }
-		    });
-		}
-	}
-	
-	//取消选中
-	function quxiao(i){
-		//alert(i);
-		$.ajax({
-	        type:"POST",
-	        url:"{:url('admin/Gouwuche/quxiao_quan')}",
-	        data:{'id':i},
-	        success: function(data) {	
-	        	location.href=data.data;
-	        }
-	    });
-	}
-	//选中
-	function queren(i){
-		//alert(i);
-		$.ajax({
-	        type:"POST",
-	        url:"{:url('admin/Gouwuche/queren_quan')}",
-	        data:{'id':i},
-	        success: function(data) {	
-	        	location.href=data.data;
-	        }
-	    });
-	}
-</script>
+	</script>
 	</body>
 </html>

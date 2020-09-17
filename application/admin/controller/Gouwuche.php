@@ -3,110 +3,104 @@
     use app\admin\controller\Base;
     use think\Db;
     use think\Session;
-    use app\admin\model\GouwucheModel;
+    //use app\admin\model\GouwucheModel;
     /*
      2020年9月1日
             详情
      */
     class Gouwuche extends Base{
         public function index(){
+            
             $name=session::get('name');
             $result=Db::name('order')
-            ->field('a.id as yy,a.order_id,a.order_zt,a.name,a.order_checked,b.id,b.commodity_name,b.commodity_class,commodity_money,commodity_edition,b.commodity_img')
+            ->field('a.id as yy,
+                    a.order_count,
+                    a.order_id,
+                    a.order_zt,
+                    a.name,
+                    b.id,
+                    b.commodity_name,
+                    commodity_money,
+                    commodity_edition_id,
+                    b.commodity_img,
+                    c.id,
+            c.commodity_edition')
             ->alias('a')
             ->join('edition_money b','a.order_id=b.id')
+            ->join('edition c','b.commodity_edition_id=c.id')
             ->where('a.name',$name)
             ->where('a.order_zt',1)
             ->limit(0,10)
             ->select();
+            $i=0;
+            foreach($result as $ak=>$m){
+                $result[$ak]['i']=$i;
+                $result[$ak]['qian']=$m['order_count']*$m['commodity_money'];
+                $i++;
+            }
             
-            //购物车已选择的总价格
-            $money=0;
-            $shu=0;//商品数量
-            $i=0;//已选择的数量
-            
-            $checked=0;//是否全选
-			foreach($result as $ak=>$m){
-			    $shu++;
-			    if($m['order_checked']==1){
-			        //还没有选择
-			    }else{
-			        $i++;
-			        $money+=$m['commodity_money'];
-			    }
-			}
-			
-			//判断是否是全选状态
-			if($shu==$i){
-			    $checked=1;
-			}
-			//商品总价格
-			$this->assign('money',$money);
-			//商品数量
-			$this->assign('shu',$shu);
-			//选中数量
-			$this->assign('liang',$i);
-			//是否为全选状态,1为全选,0为没有全选
-            $this->assign('checked',$checked);
-            //购物车数据
+            //$dd=random(6);random我封装的随机数函数
             $this->assign('result',$result);
             return $this->fetch('./gouwuche');
         }
         
         public function submit_order(){
-            /*$name_id=session::get('name_id');
-            $yes=Db::name('order')->where('name_id',$name_id)->where('order_zt',1)->count();
-            //echo $yes;
-            if($yes==10){
-                return json(['code' => 500, 'data' => url('admin/Gouwuche/index'), 'msg' => '添加购物车满了']);
-            }*/
-            
-            $data=parseParams(input('data'));
-            //订单id
-            $id=$data['edition_id'];
-            //$id=1;
-            $obj=new GouwucheModel();
+            $commodity_id=input('id'); 
+            $name=session::get('name');
+            $name_id=session::get('name_id');
+            //判断购物车是否有这个手机
+            $panduan=[
+                'name'=>$name,
+                'order_id'=>$commodity_id,
+                'order_zt'=>1
+            ];
+            $result=Db::name('order')->where($panduan)->count();
+            if($result>0){
+                return json(['code' => 404, 'data' => '', 'msg' => '购物车有这个手机了']);
+            }
+            //订单号业务编码 + 时间戳 + 机器编号[前4位] + 随机4位数 + 毫秒数
+            $suiji=random(4);
+            $number=time().$suiji;
+            //加入购物车时间
             $time=date('Y-m-d h:i:s',time());
-            $result=$obj->order($id,$time);
-            
-            return $result;
+            $order_data=[
+                'name'=>$name,
+                'name_id'=>$name_id,
+                'order_id'=>$commodity_id,
+                'order_zt'=>1,
+                'order_times'=>$time,
+                'order_number'=>$number,
+                'order_goods'=>1,
+                'order_sign'=>1,
+                'order_count'=>1
+            ];
+            $result2=Db::name('order')->insert($order_data);
+            if($result2){
+                //添加购物车成功
+                return json(['code' => 200, 'data' => '', 'msg' => '添加购物车成功']);
+            }else{
+                //添加购物车失败
+                return json(['code' => 404, 'data' => '', 'msg' => '添加购物车失败']);
+            }
             
             //var_dump($result);
         } 
-        
-        //2为选中
-        public function quan_yes(){
-            //return 1;
-            $name=session::get('name');
-            $result=Db::name('order')->where('name',$name)->update(['order_checked'=>2]);
-            //$this->assign('jj',1);
-            return json(['data' => url('admin/Gouwuche/index')]);
-            
+        //数量加加
+        public function order_count(){
+            $id=$_POST['id'];
+            $count=$_POST['count'];
+            $where=[
+                'id'=>$id
+            ];
+            $update=[
+                'order_count'=>$count
+            ];
+            Db::name('order')->where($where)->update($update);
+            //return var_dump($_POST['count']);
         }
-        //1为不选中
-        public function quan_no(){
-            $name=session::get('name');
-            $result=Db::name('order')->where('name',$name)->update(['order_checked'=>1]);
-            return json(['data' => url('admin/Gouwuche/index')]);
-        }
-        
-        //取消单选
-        public function quxiao_quan(){
-            $id=input('id');
-            $result=Db::name('order')->where('id',$id)->update(['order_checked'=>1]);
-            return json(['data' => url('admin/Gouwuche/index')]);
-        }
-        
-        //确认单选
-        public function queren_quan(){
-            $id=input('id');
-            $result=Db::name('order')->where('id',$id)->update(['order_checked'=>2]);
-            return json(['data' => url('admin/Gouwuche/index')]);
-        }
-        
         //取消订单
         public function quxiao_order(){
-            $id=input('order_id');
+            $id=input('id');
             $result=Db::name('order')->where('id',$id)->update(['order_zt'=>3]);
             return json(['msg'=>"取消订单成功",'data' => url('admin/Gouwuche/index')]);
             //$this->index();

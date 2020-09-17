@@ -5,7 +5,6 @@
         <meta name="author" content="order by dede58.com"/>
 		<title>小米6立即购买-小米商城</title>
 		<link rel="stylesheet" type="text/css" href="__CSS__/style.css">
-		<script src="__JS__/jquery.min.js"></script>
 	</head>
 	<body>
 	<!-- start header -->
@@ -13,7 +12,7 @@
 			<div class="top center">
 				<div class="left fl">
 					<ul>
-						<li><a href="{:url('admin/index/index')}" target="_blank">小米商城</a></li>
+						<li><a href="http://www.mi.com/" target="_blank">小米商城</a></li>
 						<li>|</li>
 						<li><a href="">MIUI</a></li>
 						<li>|</li>
@@ -36,14 +35,14 @@
 					</ul>
 				</div>
 				<div class="right fr">
-					<div class="gouwuche fr"><a href="{:url('admin/Gouwuche/index')}">购物车</a></div>
+					<div class="gouwuche fr"><a href="">购物车</a></div>
 					<div class="fr">
 						<ul>
-							<li><a href="{:url('admin/Login/index')}" target="_blank">登录</a></li>
+							<li><a href="./login.html" target="_blank">登录</a></li>
 							<li>|</li>
-							<li><a href="{:url('admin/Register/index')}" target="_blank" >注册</a></li>
+							<li><a href="./register.html" target="_blank" >注册</a></li>
 							<li>|</li>
-							<li><a href="{:url('admin/SelfInfo/index')}">个人中心</a></li>
+							<li><a href="">消息通知</a></li>
 						</ul>
 					</div>
 					<div class="clear"></div>
@@ -81,10 +80,11 @@
 
 	
 	<!-- xiangqing -->
-	<form action="" method="" id="editionForm">
+	<form action="post" method="">
+	{foreach name="arr" item="vo"}
 	<div class="xiangqing">
 		<div class="neirong w">
-			<div class="xiaomi6 fl">小米6</div>
+			<div class="xiaomi6 fl">{$vo.commodity_name}</div>
 			<nav class="fr">
 				<li><a href="">概述</a></li>
 				<li>|</li>
@@ -104,55 +104,50 @@
 	</div>
 	
 	<div class="jieshao mt20 w">
-		{foreach name='$arr' item='vo'}
-		<div class="left fl"><img src="__IMAGE__/liebiao_xiaomi6.jpg"></div>
+		<div class="left fl"><img src="__IMAGE__/{$vo.commodity_img}"width="100%"></div>
 		<div class="right fr">
-			<div class="h3 ml20 mt20"></div>
+			<div class="h3 ml20 mt20">{$vo.commodity_name}</div>
 			<div class="jianjie mr40 ml20 mt10">{$vo.commodity_describe}</div>
-			<div class="jiage ml20 mt10"></div>
+			<div class="jiage ml20 mt10">{$vo.commodity_money}元</div>
 			<div class="ft20 ml20 mt20">选择版本</div>
 			<div class="xzbb ml20 mt10">
-			<input type="hidden" value="{$s=0}">
-				{foreach name='$edition' item='ak'}
-				<div class="banben fl" onclick="choice({$s++})" name="biao">
+			{foreach name="edition" item="vo"}
+				<div class="banben fl" onclick="color({$vo.yy})">
 					<a>
-						<span>{$ak.commodity_edition}<input type="radio" value="{$ak.id}" name="edition_id"></span>
-						<!--<span>100元</span>-->
-						<input type='hidden' value='{$ak.id}' id='commodity_id'>
+						<span>{$vo.commodity_edition}</span>
+						<span>{$vo.commodity_money}元</span>
 					</a>
 				</div>
-				{/foreach}
+			{/foreach}
 				<div class="clear"></div>
 			</div>
 			<div class="ft20 ml20 mt20">选择颜色</div>
 			<div class="xzbb ml20 mt10">
 				<div class="banben">
-					<a>
+					<!--<a>
 						<span class="yuandian"></span>
 						<span class="yanse">亮黑色</span>
-					</a>
+					</a>-->
 				</div>
-			</div>
-			{foreach name='$edition' item='money'}
-			<div class="xqxq mt20 ml20" name="hezi">
-				<div class="top1 mt10">
-					<div class="left1 fl">{$money.commodity_edition}</div>
-					<div class="right1 fr">{$money.commodity_money}元</div>
-					<div class="clear"></div>
-				</div>
-				<div class="bot mt20 ft20 ftbc">总计：{$money.commodity_money}元</div>
-			</div>
-			{/foreach}
-			<div class="xiadan ml20 mt20">
-					<input class="jrgwc"  type="button" name="jrgwc" value="立即选购" />
-					<input class="jrgwc" type="button" name="jrgwc" value="加入购物车" onclick="jia()"/>
 				
 			</div>
-			
+			<div class="xqxq mt20 ml20">
+				<div class="top1 mt10">
+					<div class="left1 fl">小米6 全网通版 6GB内存 64GB 亮黑色</div>
+					<div class="right1 fr">2499.00元</div>
+					<div class="clear"></div>
+				</div>
+				<div class="bot mt20 ft20 ftbc">总计：2499元</div>
+			</div>
+			<div class="xiadan ml20 mt20">
+					<input class="jrgwc"  type="button" name="jrgwc" value="立即选购" />
+					<input class="jrgwc" type="button" name="jrgwc" value="加入购物车" />
+				
+			</div>
 		</div>
-		{/foreach}
 		<div class="clear"></div>
 	</div>
+	{/foreach}
 	</form>
 	<!-- footer -->
 	<footer class="mt20 center">
@@ -166,10 +161,27 @@
 	</body>
 </html>
 <script>
+	function color(a){
+		alert(a)
+		$.ajax({
+	        type:"POST",
+	        url:"{:url('admin/Xiangqing/cc')}",
+	        data:{'id' :a},
+	        success: function(data) {
+	        	alert(data);
+	        	
+	        }
+	    });
+	}
+</script>
+<!--  
+<script>
 	window.onload=function(){
 		//初始化状态
 		divs=document.getElementsByName("hezi");  //所有内容div对象  数组
-		lis=document.getElementsByName("biao");  //所有li的对象  数组
+		lis=document.getElementsByName("biao");  //版本的对象  
+		img=document.getElementsByName("img");		//图片
+		$(":radio").toggle();//隐藏单项按钮
 		edition=document.getElementsByName('edition_id');
 		
 		//改变第二个div的样式
@@ -177,47 +189,63 @@
 		//改变第一个li的样式
 		lis[0].style.background="orange";
 		lis[0].style.borderBottom="1px solid white";
-		edition[0].style.checked=true;
+		edition[0].checked=true;//默认第一个开启
+		img[1].style.display="none";
 	
 		//定时器
 		/*div1();
 		setInterval("div1()",1000);*/
 	}
-	function jia(){
-		//alert('1');
-	    $.ajax({
-	        type:"POST",
-	        url:"{:url('admin/Gouwuche/submit_order')}",
-	        data:{'data' :$('#editionForm').serialize()},
-	        success: function(data) {
-	        	//if(data.code==404){
-	        		alert(data.msg);
-	        	//}else{
-	        	//	alert(data.msg);
-	        		//window.location.href=data.data;
-	        	//}
-	        }
-	    });
-	}
+	
 	//价格
 	function choice(i){
 		for(var j=0;j<lis.length;j++){  //循环li对象，j是li的下标
 			if(i==j){
-				//被悬浮的li
-				lis[j].style.background="orange";
-				lis[j].style.borderBottom="1px solid white";
-				divs[j].style.display="block";
-				edition[j].style.checked=true;
+				//被选中的li
+				lis[j].style.background="orange";//选中背景
+				lis[j].style.borderBottom="1px solid white";//选中样式
+				divs[j].style.display="block";//描述
+				edition[j].checked=true;//按钮
+				img[j].style.display="block";//图片
 			}else{
 				lis[j].style.background="#ffffff";
 				lis[j].style.borderBottom="1px solid #B5CBD9";
 				divs[j].style.display="none";
 				edition[j].style.checked=false;
+				img[j].style.display="none";//图片
 			}
 		}
 	}
+	
+	function jia(){
+		//var   a=document.getElementsByName("");  
+		var a;
+	    for(var i=0;i<edition.length;i++){  
+	        if(edition[i].checked){
+	        	 //alert("redio   选中的值   =   "+   a[i].value);  
+	        	 a=edition[i].value;
+	        } 
+	    } 
+		//alert(a);
+	    $.ajax({
+	        type:"POST",
+	        url:"{:url('admin/Gouwuche/submit_order')}",
+	        data:{'id' :a},
+	        success: function(data) {
+	        	//alert(data);
+	        	if(data.code==200){
+	        		alert(data.msg);
+	        	}else{
+	        		alert(data.msg);
+	        		
+	        	}
+	        }
+	    });
+	}
+	
 	
 	
 
 	
 </script>
+-->
