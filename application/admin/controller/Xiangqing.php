@@ -38,6 +38,7 @@
                     a.commodity_edition_id,
                     a.commodity_money,
                     a.commodity_id,
+                    a.commodity_img,
                     b.id,
                     b.commodity_edition')
             ->alias('a')
@@ -53,7 +54,8 @@
         //颜色
         public function cc(){
             $id=input('id');
-            return $arr=Db::name('edition_money')->where('id',$id)->select();
+            $arr=Db::name('edition_money')->where('id',$id)->select();
+            //return $arr;
         }
     }
 ?>

@@ -4,6 +4,7 @@
 		<meta charset="UTF-8">
         <meta name="author" content="order by dede58.com"/>
 		<title>小米6立即购买-小米商城</title>
+		
 		<link rel="stylesheet" type="text/css" href="__CSS__/style.css">
 	</head>
 	<body>
@@ -104,15 +105,20 @@
 	</div>
 	
 	<div class="jieshao mt20 w">
-		<div class="left fl"><img src="__IMAGE__/{$vo.commodity_img}"width="100%"></div>
+		{foreach name="edition" item="dd"}
+		<div class="left fl" name="img"><img src="__IMAGE__/{$dd.commodity_img}"width="100%"></div>
+		{/foreach}
 		<div class="right fr">
 			<div class="h3 ml20 mt20">{$vo.commodity_name}</div>
 			<div class="jianjie mr40 ml20 mt10">{$vo.commodity_describe}</div>
 			<div class="jiage ml20 mt10">{$vo.commodity_money}元</div>
 			<div class="ft20 ml20 mt20">选择版本</div>
 			<div class="xzbb ml20 mt10">
+			<input type="hidden" value="{$i=0}">
 			{foreach name="edition" item="vo"}
-				<div class="banben fl" onclick="color({$vo.yy})">
+			<input type="radio" name="edition" value="{$vo.yy}">
+				<div class="banben fl" onclick="yu({$i})" name="kk">
+				<input type="hidden" name="kk" value="{$i++}">
 					<a>
 						<span>{$vo.commodity_edition}</span>
 						<span>{$vo.commodity_money}元</span>
@@ -124,10 +130,10 @@
 			<div class="ft20 ml20 mt20">选择颜色</div>
 			<div class="xzbb ml20 mt10">
 				<div class="banben">
-					<!--<a>
+					<a>
 						<span class="yuandian"></span>
 						<span class="yanse">亮黑色</span>
-					</a>-->
+					</a>
 				</div>
 				
 			</div>
@@ -141,7 +147,7 @@
 			</div>
 			<div class="xiadan ml20 mt20">
 					<input class="jrgwc"  type="button" name="jrgwc" value="立即选购" />
-					<input class="jrgwc" type="button" name="jrgwc" value="加入购物车" />
+					<input class="jrgwc" type="button" name="jrgwc" onclick="jia()" value="加入购物车" />
 				
 			</div>
 		</div>
@@ -160,35 +166,23 @@
 
 	</body>
 </html>
-<script>
-	function color(a){
-		alert(a)
-		$.ajax({
-	        type:"POST",
-	        url:"{:url('admin/Xiangqing/cc')}",
-	        data:{'id' :a},
-	        success: function(data) {
-	        	alert(data);
-	        	
-	        }
-	    });
-	}
-</script>
-<!--  
+
+ <!-- juery.min.js要放前面 -->
+<script src="__JS__/jquery.min.js"></script>
 <script>
 	window.onload=function(){
 		//初始化状态
-		divs=document.getElementsByName("hezi");  //所有内容div对象  数组
-		lis=document.getElementsByName("biao");  //版本的对象  
+		//divs=document.getElementsByName("hezi");  //所有内容div对象  数组
+		kk=document.getElementsByName("kk");  //版本的对象  
 		img=document.getElementsByName("img");		//图片
 		$(":radio").toggle();//隐藏单项按钮
-		edition=document.getElementsByName('edition_id');
+		edition=document.getElementsByName('edition');
 		
 		//改变第二个div的样式
-		divs[1].style.display="none";   //按照块级元素显示
+		//divs[1].style.display="none";   //按照块级元素显示
 		//改变第一个li的样式
-		lis[0].style.background="orange";
-		lis[0].style.borderBottom="1px solid white";
+		kk[0].style.background="orange";
+		kk[0].style.borderBottom="1px solid white";
 		edition[0].checked=true;//默认第一个开启
 		img[1].style.display="none";
 	
@@ -196,10 +190,27 @@
 		/*div1();
 		setInterval("div1()",1000);*/
 	}
-	
+</script>
+<script>
 	//价格
-	function choice(i){
-		for(var j=0;j<lis.length;j++){  //循环li对象，j是li的下标
+	function yu(i){
+		
+		for(var j=0;j<kk.length;j++){
+			if(j==i){
+				
+				edition[j].checked=true;
+				img[j].style.display="block";
+				kk[j].style.background="orange";
+				kk[j].style.borderBottom="1px solid white";
+			}else{
+				edition[j].checked=false;
+				img[j].style.display="none";
+				kk[j].style.background="#ffffff";
+				kk[j].style.borderBottom="1px solid  #B5CBD9";
+			}
+		}
+		
+		/*for(var j=0;j<lis.length;j++){  //循环li对象，j是li的下标
 			if(i==j){
 				//被选中的li
 				lis[j].style.background="orange";//选中背景
@@ -214,9 +225,8 @@
 				edition[j].style.checked=false;
 				img[j].style.display="none";//图片
 			}
-		}
+		}*/
 	}
-	
 	function jia(){
 		//var   a=document.getElementsByName("");  
 		var a;
@@ -243,9 +253,5 @@
 	    });
 	}
 	
-	
-	
 
-	
 </script>
--->
