@@ -96,6 +96,7 @@
 				</div>-->
 				{foreach name='arr' item='vo'}
 				<div class="mingxing fl mb20" style="border:2px solid #fff;width:230px;cursor:pointer;" onmouseout="this.style.border='2px solid #fff'" onmousemove="this.style.border='2px solid red'">
+					<!-- id等于去那edition_money表里commodity_id字段一样的数据,describe_id就是一个描述商品的id -->
 					<div class="sub_mingxing"><a href="{:url('admin/xiangqing/index',['id'=>$vo.commodity_cc,'describe_id'=>$vo.dd])}" target="_blank"><img src="__IMAGE__/{$vo.commodity_img}"  alt=""></a></div>
 					<div class="pinpai"><a href="./xiangqing.html" target="_blank">{$vo.commodity_name}</a></div>
 					<div class="youhui">{$vo.commodity_describe}</div>

@@ -157,8 +157,12 @@
             return $this->fetch('./test2');
              
         }
-        
-        
+        //测试
+        public function kk(){
+            $arr=Db::name('commodity')->where('id',2)->select();
+            
+            var_dump($arr);
+        }
         
 		function GetRandStr($len) {
     $chars = array("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k","l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v","w", "x", "y", "z","0", "1", "2","3", "4", "5", "6", "7", "8", "9");

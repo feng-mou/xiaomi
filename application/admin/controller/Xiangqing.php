@@ -14,25 +14,12 @@
             $id=input('id');
             //商品id
             $describe_id=input('describe_id');
-            //$name=input('name');
+            //获取session的name值
+            $name=session::get('name');
             //查询描述
-            $name=session::get('name');
-            $arr=Db::name('commodity')
-            ->field('a.id yy,
-                        a.commodity_describe,
-                        a.commodity_cc,
-                        b.id,
-                        b.commodity_name,
-                        b.commodity_img,
-                        b.commodity_money')
-                        ->alias('a')
-                        ->join('edition_money b','a.commodity_cc=b.commodity_class')
-                        ->where('b.id',$describe_id)
-                        ->select();
-            
-            $this->assign('arr',$arr);
-            //版本
-            $name=session::get('name');
+            $arr=Db::name('commodity')->where('id',$describe_id)->select();
+           
+            //查版本
             $edition=Db::name('edition_money')
             ->field('a.id yy,
                     a.commodity_class,
@@ -46,6 +33,8 @@
             ->alias('a')
             ->join('edition b','commodity_edition_id=b.id')
             ->where('a.commodity_id',$id)->select();
+            
+            //版本去重
             $i=0;
             foreach($edition as $ak=>$sm){
                 $dd[$i]['edition']=$sm['commodity_edition'];
@@ -54,16 +43,25 @@
                 $i++;
             }
             $cp=array_unique($dd,SORT_REGULAR);
+            //将版本选择放入xiangqing.html
             $this->assign('edition',$cp);
+            //描述
+            $this->assign('arr',$arr);
             //导航栏
             $acg=Db::name('class')->select();
             $this->assign('acg',$acg);
             
             return $this->fetch('./xiangqing');
         } 
-        //颜色
+        //颜色盒子
         public function cc(){
+            /*
+             * 接收传过来的版本id
+             */
             $id=input('commodity_dd');
+            /*
+             * 查询edition_money表和commodity_color表拿到的值
+             * */
             $arr=Db::name('edition_money')
             ->field('a.id,
                      a.commodity_color laji,
@@ -74,8 +72,13 @@
                      ->join('color b','a.commodity_color=b.id')
                      ->where('commodity_dd',$id)
                      ->select();
+            //设置一个字符串变量
             $str="";
+            //$color_i下标
             $color_i=0;
+            //循环以字符串的形式放入$str
+            //dd[id]代表这个颜色对应的id
+            //radio单项按钮的value代表id
             foreach($arr as $gege=>$dd){
                 $str=$str.
                     "<div class='banben' name='yanse'>".
@@ -87,11 +90,13 @@
                     "</div>";
                 $color_i++;
             }
+            //放入json
             return json(['result'=>$str]);
         }
         
         //图片
         public function tu(){
+            //接受id根据id连表查图片
             $tu_id=input('tu_id');
             $arr=Db::name('edition_money')
             ->field('a.id,
@@ -109,6 +114,7 @@
                      ->join('edition c','a.commodity_edition_id=c.id')
                      ->where('a.id',$tu_id)
                      ->select();
+            //设置空字符串
             $str="";
             foreach($arr as $ak=>$sm){
                 //图片
@@ -120,6 +126,7 @@
                 //总价
                 $money="总计：".$sm['commodity_money']."元";
             }
+            //放入json返回到前台去
             return json(['tupian'=>$str,'edition'=>$edition,'qian'=>$qian,'money'=>$money]);
         }
     }

@@ -6,6 +6,8 @@
 		<title>小米6立即购买-小米商城</title>
 		
 		<link rel="stylesheet" type="text/css" href="__CSS__/style.css">
+		<!-- layui样式 -->
+		<link rel="stylesheet" type="text/css" href="__LAYUI__/css/layui.css">
 	</head>
 	<body>
 	<!-- start header -->
@@ -105,20 +107,22 @@
 	</div>
 	
 	<div class="jieshao mt20 w">
-		<div class="left fl"><img src="__IMAGE__/5DA4C46F4C5CD0849FA1957B7964248C.png"width="100%" id="img"></div>
+		<div class="left fl"><img src="__IMAGE__/{$vo.commodity_img}"width="100%" id="img"></div>
 		<div class="right fr">
 			<div class="h3 ml20 mt20">{$vo.commodity_name}</div>
 			<div class="jianjie mr40 ml20 mt10">{$vo.commodity_describe}</div>
 			<div class="jiage ml20 mt10" id="chuizi">{$vo.commodity_money}元</div>
 			<div class="ft20 ml20 mt20">选择版本</div>
 			<div class="xzbb ml20 mt10">
+			<!-- 版本选中给颜色选 -->
 			<input type="hidden" value="{$i=0}">
 			{foreach name="edition" item="vo"}
+				<!-- $vo.id代表表里的commodity_dd代表版本,$i代表下标 -->
 				<div class="banben fl" onclick="edition({$vo.id},{$i})" name="edition">
 				<input type="hidden" value="{$i++}">
 					<a>
 						<span>{$vo.edition}</span>
-						<span>{$vo.money}元</span>
+						<span style=font-size:13px;>{$vo.money}元</span>
 					</a>
 				</div>
 			{/foreach}
@@ -143,7 +147,7 @@
 			<br/>
 			<div class="xqxq mt20 ml20">
 				<div class="top1 mt10">
-					<div class="left1 fl" id="banben">小米6 全网通版 6GB内存 64GB 亮黑色</div>
+					<div class="left1 fl" id="banben"><!-- 小米6 全网通版 6GB内存 64GB 亮黑色 --></div>
 					<div class="right1 fr" id="qian"><!-- 2499.00元 --></div>
 					<div class="clear"></div>
 				</div>
@@ -173,17 +177,18 @@
 
  <!-- juery.min.js要放前面 -->
 <script src="__JS__/jquery.min.js"></script>
+<!-- layui的js -->
+<script type="text/javascript" src="__LAYUI__/layui.all.js"></script>
 <script>
 	window.onload=function(){
 		//$(":radio").hide();//隐藏单项按钮
 	}
 </script>
 <script>
-	//价格pp代表下标
+	//i代表版本,pp代表下标
 	function edition(i,pp)
 	{	
-		
-		//alert(pp)
+		//循环判断是否选中,选中背景颜色改变,否则不改变
 		for(c=0;c<$("[name='edition']").length;c++){
 			if(pp==c){
 				$("[name='edition']").eq(c).css("backgroundColor","orange")
@@ -192,47 +197,46 @@
 			}
 		}
 		
+		//发送请求到控制器将返回的json覆盖到指定页面
 		 $.ajax({
 		        type:"POST",
 		        url:"{:url('admin/Xiangqing/cc')}",
 		        data:{'commodity_dd' :i},
 		        success: function(data)
 		        {
+		        	//data.result是颜色盒子里面有点击事件
 		        	$('#color').html(data.result);
+		        	//放入页面的同时隐藏单项按钮
 		        	$(":radio").hide();
-		        	//$('#banben').text(data.kk);
-		        	/*if(data.code==200)
-		        	{
-		        		alert(data.msg);
-		        	}
-		        	else
-		        	{
-		        		alert(data.msg);
-		        	}*/
 		       }
 		 });
 		 
 	}
+	//a代表id,color_i代表下标
 	function tu(a,color_i){
+		//循环判断是否选中
 		for(tt=0;tt<$("[name='yanse']").length;tt++){
 			if(color_i==tt)
 			{
+				//选中了把背景颜色和单项按钮选中
 				$("[name='yanse']").eq(tt).css("backgroundColor","orange")
 				$("[name='commodity']").eq(tt).prop("checked",true)
 			}
 			else
 			{	
+				//否则背景颜色不变单选按钮不选中
 				$("[name='yanse']").eq(tt).css("backgroundColor","#ffffff")
 				$("[name='commodity']").eq(tt).prop("checked",false)
 			}
 		}
-		
+		//发送请求到控制器的tu方法去,a为id
 		$.ajax({
 	        type:"POST",
 	        url:"{:url('admin/Xiangqing/tu')}",
 	        data:{'tu_id' :a},
 	        success: function(data)
 	        {
+	        	//将返回的json输出到指定html覆盖
 	        	$('#img').attr('src',data.tupian);
 	        	$('#banben').text(data.edition);
 	        	$('#qian').text(data.qian);
@@ -241,27 +245,25 @@
 	       }
 	 });
 	}
+	//加入购物车
 	function jia(){
-		//var   a=document.getElementsByName("");  
 		var a;
+		//循环判断是否选中,选中给a赋值否则未定义
 	    for(var i=0;i<$("[name='commodity']").length;i++){  
 	        if($("[name='commodity']").eq(i).is(':checked')){
 	        	 a=$("[name='commodity']").eq(i).val();
 	        } 
 	    } 
-	    
-		//alert(a);
+		//发送请求
 	    $.ajax({
 	        type:"POST",
 	        url:"{:url('admin/Gouwuche/submit_order')}",
 	        data:{'id' :a},
 	        success: function(data) {
-	        	//alert(data);
 	        	if(data.code==200){
-	        		alert(data.msg);
+	        		layer.msg(data.msg,{icon:6 ,offset:"auto" ,time:1000});
 	        	}else{
-	        		alert(data.msg);
-	        		
+	        		layer.msg(data.msg,{icon:5 ,time:1000})		
 	        	}
 	        }
 	    });

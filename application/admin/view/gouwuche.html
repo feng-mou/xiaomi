@@ -6,6 +6,10 @@
 		<title>我的购物车-小米商城</title>
 		<link rel="stylesheet" type="text/css" href="__CSS__/style.css">
 		<script src="__JS__/jquery.min.js"></script>
+		<!-- layui样式 -->
+		<link rel="stylesheet" type="text/css" href="__LAYUI__/css/layui.css">
+		<!-- layui的js -->
+		<script type="text/javascript" src="__LAYUI__/layui.all.js"></script>
 	</head>
 	<body>
 	<!-- start header -->
@@ -191,12 +195,12 @@
 		        url:"{:url('admin/Gouwuche/quxiao_order')}",
 		        data:{'id' :id},
 		        success: function(data) {
-		        	alert(data)
 		        	if(data.code == 404){
-		                alert(data.msg);
+		                layer.msg(data.msg,{icon:5,time:1000});
 		            }else{
-		                alert(data.msg);
-		                window.location.href=data.data;
+		            	layer.msg(data.msg,{icon:6 ,offset:"auto" ,time:1000},function(){
+		                	window.location.href=data.data;
+		                })
 		            }
 		        }
 	    	});
@@ -215,15 +219,22 @@
 	        data:{'id' :arr},
 	        success: function(data) {
 	        	//alert(data)
-	        	if(data.code == "error"){
+	        	if(data.code == "error")
+	        	{
 	        		//错误
-	                alert(data.msg);
-	                window.location.href=data.data;
-	            }else{
-	            	//购买成功
-	                alert(data.msg);
-	                window.location.href=data.data;
+	                layer.msg(data.msg,{icon:6 ,offset:"auto" ,time:1000},function()
+	                		{
+		                		window.location.href=data.data;
+		               		})
 	            }
+	        	else
+	            	{
+	            	//购买成功
+	                layer.msg(data.msg,{icon:6 ,offset:"auto" ,time:1000},function()
+	                		{
+		                		window.location.href=data.data;
+		               		})
+	            	}
 	        }
     	});
 	}
