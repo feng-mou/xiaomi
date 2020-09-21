@@ -46,6 +46,9 @@
         
         public function submit_order(){
             $commodity_id=input('id'); 
+            if(empty($commodity_id)){
+                return json(['code' => 404, 'data' => '', 'msg' => '不能不选颜色']);
+            }
             $name=session::get('name');
             $name_id=session::get('name_id');
             //判断购物车是否有这个手机
