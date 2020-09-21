@@ -2,9 +2,18 @@
 	<head>
 		<title>layui测试</title>
 	</head>
-		
-		<link rel="stylesheet" type="text/css" href="__LAYUI__/css/layui.css">
+	<style>
+		.json{
+			width:100px;
+			height:100px;
+			border:1px solid red;
+		}
+	</style>
+	<!-- juery.min.js要放前面 -->
+		<script src="__JS__/jquery.min.js"></script>
 		<script type="text/javascript" src="__LAYUI__/layui.all.js"></script>
+		<link rel="stylesheet" type="text/css" href="__LAYUI__/css/layui.css">
+		
 	<body>
 	<button type="button" class="layui-btn layui-btn-normal" onclick="aa()">1</button>
 	<button data-method="setTop" class="layui-btn" onclick="bb()">2</button>
@@ -14,11 +23,23 @@
 	<button type="button" class="layui-btn layui-btn-normal" onclick="ff()">6</button>
 	<button type="button" class="layui-btn layui-btn-normal" onclick="gg()">7</button>
 	<button type="button" class="layui-btn layui-btn-normal" onclick="hh()">8</button>
+	<div id="hezi">1</div>
+	
 	<script>
 		function aa(){
 			//√
 			//layer.msg("这是一个msg提示框", { icon: 1, offset: "auto", time:2000 })
-			layer.msg('删除失败', {icon: 1});
+			//layer.msg('删除失败', {icon: 1});
+			$.ajax({
+		        type:"POST",
+		        url:"{:url('admin/Test/cc')}",
+		      
+		        data:{},
+		        success: function(data) {
+		        	//alert(data)
+		  			$('#hezi').html(data.result)
+		        }
+		    });
 		}
 		
 		function bb(){

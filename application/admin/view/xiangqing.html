@@ -36,7 +36,7 @@
 					</ul>
 				</div>
 				<div class="right fr">
-					<div class="gouwuche fr"><a href="">购物车</a></div>
+					<div class="gouwuche fr"><a href="{:url('admin/Gouwuche/index')}">购物车</a></div>
 					<div class="fr">
 						<ul>
 							<li><a href="./login.html" target="_blank">登录</a></li>
@@ -116,8 +116,8 @@
 			<div class="xzbb ml20 mt10">
 			<input type="hidden" value="{$i=0}">
 			{foreach name="edition" item="vo"}
-			<input type="radio" name="edition" value="{$vo.yy}">
 				<div class="banben fl" onclick="yu({$i})" name="kk">
+				<input type="radio" name="edition" value="{$vo.yy}">
 				<input type="hidden" name="kk" value="{$i++}">
 					<a>
 						<span>{$vo.commodity_edition}</span>

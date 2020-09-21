@@ -4,40 +4,31 @@
     use think\Db;
     use think\session;
     class Test extends Base{
+        
+        
+        
+        
+        
+        
+        
+        public function cc(){
+            $arr=Db::name('edition_money')->where('id',13)->select();
+           $acg=Db::name('user')->select();
+           $str = "";
+           foreach ($acg as $k=>$v){
+               $str = $str."<div class='json'>".$acg[$k]['name']."</div><br/>";
+           }
+           //var_dump($str);
+            return json(['result'=>$str]);
+        }
+        
+        
+        
+        
+        
+        
+        
         public function index(){
-			//$acg=$this->GetRandStr(6);
-			//sendTemplateSMS('19974233942',array($acg,5),1);
-			/*$name=session::get('name');
-			$result=Db::name('order')
-			->field('a.id as yy,a.order_id,a.order_zt,a.name,a.order_checked,b.id,b.commodity_name,b.commodity_class,commodity_money,commodity_edition,b.commodity_img')
-			->alias('a')
-			->join('edition_money b','a.order_id=b.id')
-			->where('a.name',$name)
-			->where('a.order_zt',1)
-			->limit(0,10)
-			->select();
-			var_dump($result);*/
-			/*$money=0;
-			foreach($result as $ak=>$m){
-			    if($m['order_checked']==1){
-			        //还没有选择
-			    }else{
-			        $money+=$m['commodity_money'];
-			    }
-			}
-			$this->assign('money',$money);
-			$this->assign('result'$result);*/
-			//$where="is_menu=2 and id in (".$nodestr.")";
-			//$arr=[12,13,14,15,18];
-			//$arr=implode(',',$arr);
-			//$where="id= id in (".$arr.")";
-			/*foreach ($arr as $ak=>$m){
-			    var_dump(Db::name('order')->where('id',$m)->select());
-			}*/
-			//$result=Db::name('order')->where($where)->select();
-			//var_dump($result);
-			//$time=date('Y-m-d h:i:s',time());
-			
             $name=session::get('name');
             $result=Db::name('order')
             ->field('a.id as yy,a.order_count,a.order_id,a.order_zt,a.name,a.order_checked,b.id,b.commodity_name,b.commodity_class,commodity_money,commodity_edition,b.commodity_img')
@@ -80,8 +71,8 @@
             ->where('a.order_zt',1)
             ->limit(0,10)
             ->select();
-            var_dump($result);
-            //return $this->fetch('./test2');
+            //var_dump($result);
+            return $this->fetch('./test2');
              
         }
         
