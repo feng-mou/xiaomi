@@ -4,6 +4,10 @@
     use think\Db;
     use think\session;
     class SelfInfo extends Base{
+        /*
+         2020年9月4日
+                       个人详情
+         */
         public function index(){
             //获得用户信息
             $name_id=session::get('name_id');

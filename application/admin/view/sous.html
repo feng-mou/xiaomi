@@ -73,9 +73,9 @@
 				</ul>
 			</div>
 			<div class="search fr">
-				<form action="" method="post">
+				<form action="{:url('admin/Sous/index')}" method="get">
 					<div class="text fl">
-						<input type="text" class="shuru"  placeholder="小米6&nbsp;小米MIX现货">
+						<input type="text" class="shuru" name='name' placeholder="小米6&nbsp;小米MIX现货" value="{$name}">
 					</div>
 					<div class="submit fl">
 						<input type="submit" class="sousuo" value="搜索"/>
@@ -127,7 +127,7 @@
 		</div>
 		<div class="nm">
 		{for start="1" end="$num+1" name='sm'}
-			<a href="{:url('admin/liebiao/index',['fy_id'=>$sm,'id'=>$id])}">第{$sm}页</a>
+			<a href="/admin/Sous/index/fy_id/{$sm}/name/{$name}">第{$sm}页</a>
 		{/for}
 		</div>
 		<footer class="mt20 center">			

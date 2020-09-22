@@ -9,6 +9,10 @@
 		<script src="__JS__/jquery.min.js"></script>
 		<script src="__JS__/plugins/layer/layer.min.js"></script>
 		
+		<!-- layui样式 -->
+		<link rel="stylesheet" type="text/css" href="__LAYUI__/css/layui.css">
+		<!-- layui的js -->
+		<script type="text/javascript" src="__LAYUI__/layui.all.js"></script>
 	</head>
 	<body>
 		<form  method="post" action="" id="registerForm">
@@ -51,10 +55,11 @@
 	        data:{'data' : $('#registerForm').serialize()},// 你的formid
 	        success: function(data) {
 	            if(data.code == 404){
-	                alert(data.msg);
+	            	layer.msg(data.msg,{icon:5 ,offset: "auto" ,time:1000 });
 	            }else{
-	                alert(data.msg);
-	                window.location.href=data.data;
+	            	layer.msg(data.msg,{icon:6 ,offset:"auto" ,time:1000},function(){
+	                	window.location.href=data.data;
+	                }) 
 	            }
 	        }
 	    });

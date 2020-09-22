@@ -4,6 +4,10 @@
     use think\Db;
     use think\Session;
     class Dingdanzhongxin extends Base{
+        /*
+         2020年9月4日
+                        订单详情
+         */
         public function index(){
             $acg=Db::name('class')->select();
             $this->assign('acg',$acg);

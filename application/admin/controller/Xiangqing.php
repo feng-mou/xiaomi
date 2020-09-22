@@ -5,7 +5,7 @@
     use think\Session;
     //use app\admin\model\LoginModel;
     /*
-     2020年9月1日
+     2020年9月3日
             详情
      */
     class Xiangqing extends Base{

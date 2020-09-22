@@ -7,13 +7,14 @@
     //验证账号密码
     use app\admin\model\LoginModel;
     class Login extends Controller{
+        /*
+         2020年9月1日
+                        登录
+         */
         public function index(){
             return $this->fetch('./Login');
         } 
-        /*
-         2020年9月1日
-                        登录              
-                */
+        
         public function loginYz(){
             //$captcha=new Captcha();//实例化判断验证码是否一致方法
             //解析成数组

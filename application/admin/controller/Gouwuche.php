@@ -5,8 +5,8 @@
     use think\Session;
     //use app\admin\model\GouwucheModel;
     /*
-     2020年9月1日
-            详情
+     2020年9月4日
+             购物车
      */
     class Gouwuche extends Base{
         public function index(){

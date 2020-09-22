@@ -4,7 +4,7 @@
     use think\Db;
     //use app\admin\model\LoginModel;
     /*
-     2020年9月1日
+     2020年9月2日
             小米手机列表
      */
     class Liebiao extends Controller{
@@ -20,8 +20,8 @@
                     $this->success('没有货', 'admin/index/index');
                 }
                 //查看分页id
-                /*$fy_id=input('fy_id');
-                $fy_ids=($fy_id-1)*5;*/
+                $fy_id=input('fy_id');
+                $fy_ids=($fy_id-1)*5;
                 //查这个类的商品
                 //$arr=Db::name('commodity')->where('commodity_class',$id)->limit(0,5)->select();
                 $arr=Db::name('commodity')
@@ -35,11 +35,11 @@
                         a.commodity_img')
                 ->alias('a')
                 ->where('a.commodity_class',$id)
-                ->limit(0,5)
+                ->limit($fy_ids,5)
                 ->select();
                 //分页
                 $num=ceil($count/5);
-                var_dump($num);
+                //var_dump($num);
                 //将导航栏放到列表上
                 $liebiao=Db::name('class')->select();
                 $this->assign('acg',$liebiao);
